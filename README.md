@@ -6,6 +6,12 @@ The project is implemented in multiple phases as described in the assignment doc
 
 ---
 
+# Live Demo
+Live Frontend URL: https://blog-scraping-gamma.vercel.app/
+
+Backend API URL: https://blog-scraping-nkrc.onrender.com/articles
+
+
 ## Phase 1 – Web Scraping, Database, and APIs
 
 ### Objective
