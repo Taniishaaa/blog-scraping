@@ -44,13 +44,21 @@ The project is divided into phases as mentioned in the assignment.
 ## Data Flow (Phase 1)
 
 BeyondChats Blogs Website
+
 ↓
+
 Axios (fetch HTML)
+
 ↓
+
 Cheerio (parse & extract data)
+
 ↓
+
 MongoDB Atlas (store articles)
+
 ↓
+
 Express APIs (serve articles)
 
 ## Local Setup Instructions
