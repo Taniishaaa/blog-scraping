@@ -5,9 +5,15 @@ const articleSchema = new mongoose.Schema(
     title: String,
     url: String,
     originalContent: String,
-    source: {
+
+    updatedContent: {
       type: String,
-      default: "BeyondChats",
+      default: null,
+    },
+
+    references: {
+      type: [String],
+      default: [],
     },
   },
   { timestamps: true }
