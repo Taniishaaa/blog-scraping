@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 
-const API_URL = "http://localhost:5000/articles";
+const API_URL = "https://blog-scraping-nkrc.onrender.com/articles";
 
 export default function ArticleDetail() {
   const { id } = useParams();
