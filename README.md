@@ -2,116 +2,187 @@
 
 This repository contains my submission for the **BeyondChats Full Stack Web Developer Intern assignment**.
 
-The project is divided into phases as mentioned in the assignment.  
+The project is implemented in multiple phases as described in the assignment document.
 
-## Phase 1 – Web Scraping + Database + APIs
+---
+
+## Phase 1 – Web Scraping, Database, and APIs
 
 ### Objective
-- Scrape the **oldest blog articles** from the BeyondChats blog website.
+- Scrape the oldest blog articles from the BeyondChats blog website.
 - Store the scraped articles in a database.
-- Expose APIs to fetch the stored articles.
+- Expose CRUD APIs to manage the stored articles.
 
-## What Phase 1 Does
+---
+
+### What Phase 1 Does
 
 1. Fetches the BeyondChats blogs page  
 2. Extracts blog article links  
-3. Filters valid blog articles (ignores tag pages)
-4. Visits each article page
+3. Filters valid blog articles (ignores tag pages)  
+4. Visits each article page  
 5. Scrapes:
    - Article title
    - Article content
-   - Article URL
-6. Stores the data in MongoDB
-7. Provides basic APIs to retrieve articles
+   - Article URL  
+6. Stores the data in MongoDB  
+7. Exposes CRUD APIs to access and modify articles  
 
-> Note: Some `/tag/` pages are intentionally skipped since they are not actual articles.
+Note: Some `/tag/` pages are intentionally skipped since they are not actual blog articles.
 
+---
+
+### APIs (Phase 1)
+
+- GET /articles – Fetch all articles  
+- GET /articles/:id – Fetch a single article  
+- POST /articles – Create a new article  
+- PUT /articles/:id – Update an existing article  
+- DELETE /articles/:id – Delete an article  
+
+---
+
+## Phase 2 – Article Enhancement Using Google Search and LLM
+
+### Objective
+- Enhance existing articles using insights from top-ranking Google search results.
+- Rewrite articles using an LLM while avoiding plagiarism.
+- Store updated content and reference sources back into the database.
+
+---
+
+### What Phase 2 Does
+
+1. Fetches articles from the Phase 1 APIs  
+2. Searches the article title on Google using a Search API  
+3. Selects two relevant blog/article links from search results  
+4. Scrapes the main textual content from those competitor articles  
+5. Uses an LLM to rewrite the original article:
+   - Improves clarity and structure
+   - Uses competitor articles only as inspiration
+   - Avoids copying or plagiarism  
+6. Updates the original article in the database using APIs  
+7. Stores reference URLs used for rewriting  
+
+---
+
+### LLM Choice
+
+Groq (LLaMA 3.1) is used for article rewriting.  
+It was chosen because it is free to use, fast, and suitable for content transformation tasks without requiring a paid API subscription.
+
+---
+
+### Data Stored After Phase 2
+
+Each article may now contain:
+- originalContent
+- updatedContent
+- references (array of competitor article URLs)
+
+---
 
 ## Tech Stack
 
-**Backend**
+Backend:
 - Node.js
 - Express.js
 - MongoDB Atlas
 - Mongoose
 
-**Scraping**
-- Axios (for HTTP requests)
-- Cheerio (for HTML parsing)
+Scraping and APIs:
+- Axios
+- Cheerio
+- SerpAPI (Google Search results)
+
+LLM:
+- Groq SDK (LLaMA 3.1)
 
 ---
 
-## Data Flow (Phase 1)
+## Data Flow Overview
 
-BeyondChats Blogs Website
+Phase 1 Flow:
+BeyondChats Blog → Axios → Cheerio → MongoDB → Express APIs
 
-↓
+Phase 2 Flow:
+Articles API → Google Search API → Competitor Article Scraping → LLM (Groq) → Updated Article via API
 
-Axios (fetch HTML)
-
-↓
-
-Cheerio (parse & extract data)
-
-↓
-
-MongoDB Atlas (store articles)
-
-↓
-
-Express APIs (serve articles)
+---
 
 ## Local Setup Instructions
 
 1. Clone the repository
-```bash
-git clone <your-repo-url>
-
-cd beyondchats-assignment/server
 
 ```
+git clone <your-repo-url>  
+
+cd beyondchats-assignment/server 
+``` 
+
 2. Install dependencies
-``` npm install ```
 
-3. Setup environment variables
+```
+npm install  
+```
 
-Create a .env file inside server/:
+3. Create environment variables
 
-``` MONGO_URI=your_mongodb_connection_string ```
+Create a `.env` file inside the server directory with the following values:
 
-4. Run the scraping script
-``` node src/scripts/scrapeBlogs.js ```
+```
+MONGO_URI=your_mongodb_connection_string  
 
+SERPAPI_KEY=your_serpapi_key  
 
-This will scrape articles and store them in MongoDB.
+GROQ_API_KEY=your_groq_api_key  
+```
+
+4. Run Phase 1 scraping
+
+```node src/scripts/scrapeBlogs.js ```  
+
+This will scrape BeyondChats blog articles and store them in MongoDB.
 
 5. Start the API server
-``` node src/index.js```
 
+```node src/index.js  ```
 
-APIs available:
+6. Run Phase 2 scripts (manual execution)
 
-GET /articles → fetch all articles
+```
+node src/scripts/phase2/fetchArticles.js 
 
-GET /articles/:id → fetch single article
+node src/scripts/phase2/googleSearch.js  
 
-### Known Limitations (Phase 1)
+node src/scripts/phase2/scrapeCompetitor.js  
 
-JavaScript-heavy or dynamically rendered websites are not handled.
+node src/scripts/phase2/rewriteWithGroq.js 
 
-Only text content is scraped (images and formatting are ignored).
+node src/scripts/phase2/updateArticle.js 
+```
 
-Error handling is basic and will be improved in later phases.
+## Known Limitations
 
-### Upcoming Work
+- JavaScript-heavy or dynamically rendered websites are not supported for scraping.
+- Only textual content is processed (images and formatting are ignored).
+- Phase 2 workflow is semi-manual to maintain clarity and simplicity.
+- Error handling is minimal and focused on assignment requirements.
 
-Phase 2: Google Search integration + LLM-based article rewriting
+---
 
-Phase 3: React frontend for displaying original and updated articles
+## Upcoming Work
+
+Phase 3: A React-based frontend to display:
+- Original articles
+- Updated articles
+- Reference sources
+
+---
 
 ## Author
 
 Tanisha
 
-This project was built specifically for the BeyondChats internship assignment.
+This project was built specifically for the BeyondChats internship assignment.  
 All code is original and written while learning and implementing the required concepts.
